@@ -1,0 +1,91 @@
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    fname VARCHAR (40),
+    lname VARCHAR (40),
+    gender VARCHAR (1),
+    age INT,
+    contact_add INT,
+    user_email VARCHAR (40),
+    user_pass VARCHAR (40)
+);
+
+SELECT * 
+FROM users;
+
+CREATE TABLE book (
+    book_id INT PRIMARY KEY,
+    bk_title VARCHAR (40),
+    bk_name VARCHAR (40),
+    publisher VARCHAR (40),
+    author VARCHAR (40),
+    bk_num INT,
+    pub_date DATE
+
+);
+
+SELECT * 
+FROM book;
+
+--REMOVE EXISTING TABLE
+
+DROP TABLE student;
+
+CREATE TABLE student (
+    stud_id INT PRIMARY KEY,
+    fname VARCHAR (40),
+    lname VARCHAR (40),
+    gender VARCHAR (1),
+    contact_add INT,
+    stud_email VARCHAR (40),
+    stud_pass VARCHAR (40)
+
+);
+
+SELECT *
+FROM student;
+
+CREATE TABLE borrowing (
+    borrowing_id INT PRIMARY KEY,
+    book_id INT,
+    stud_id INT,
+    date_borrowed DATE,
+    date_returned DATE,
+    FOREIGN KEY (book_id) REFERENCES book (book_id) ON DELETE CASCADE,
+    FOREIGN KEY (stud_id) REFERENCES student (stud_id) ON DELETE CASCADE
+);
+
+CREATE TABLE transaction (
+    trans_id INT PRIMARY KEY,
+    trans_name VARCHAR (40),
+    borrowing_id INT,
+    stud_id INT,
+    trans_date DATE,
+    FOREIGN KEY (borrowing_id) REFERENCES borrowing (borrowing_id) ON DELETE SET NULL,
+    FOREIGN KEY (stud_id) REFERENCES student (stud_id) ON DELETE SET NULL
+);
+
+CREATE TABLE reports (
+    report_id INT PRIMARY KEY,
+    trans_id INT,
+    borrowing_id INT,
+    report_date DATE,
+    FOREIGN KEY (trans_id) REFERENCES transaction (trans_id) ON DELETE SET NULL,
+    FOREIGN KEY borrowing (borrowing_id) REFERENCES student (stud_id) ON DELETE SET NULL
+
+);
+
+SELECT 
+FROM reports;
+
+
+SELECT fname
+FROM student
+UNION
+SELECT book_id
+FROM book;
+
+
+select student.stud_id, student.fname, student.lname, borrowing.book_id
+FROM student
+JOIN borrowing
+ON student.stud_id = borrowing.stud_id;
